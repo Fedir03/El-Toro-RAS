@@ -20,7 +20,7 @@ void searchAndDestroy() {
 
   
   //@FLOWCHART: "Lo Veo?"
-  if (d > 0 && d < 20) {
+  if (d > 0 && d < 77) {
     //Prendo led
     digitalWrite(Led, HIGH);
     
