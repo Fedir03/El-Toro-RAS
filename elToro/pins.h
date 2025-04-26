@@ -9,6 +9,6 @@ const int Echo = 3;
 const int Led = 13;
 const int Buzzer = 8;
 
-MPU6050 accelerometer;
+extern MPU6050 accelerometer;
 
 #endif
