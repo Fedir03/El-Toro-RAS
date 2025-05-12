@@ -1,5 +1,6 @@
 #include "pins.h"
 #include "searchAndDestroy.h"
+#include "motor.h"
 #include <Arduino.h>
 
 void searchAndDestroy() {
@@ -26,8 +27,10 @@ void searchAndDestroy() {
     
     //@TODO:
     //Motores max hacia adelante (voy a buscarlo)
-    
-    
+    for (int i = 200; i > 0; i--) {
+      motor_d(i, ADELANTE);
+      delay(20);
+    }
     //Grita mas agudo mientras mas cerca lo ve :D
     freq = map(d, 0, 100, 1500, 100);
     tone(Buzzer, freq);
@@ -35,7 +38,8 @@ void searchAndDestroy() {
   } else {
     noTone(Buzzer);
     digitalWrite(Led, LOW);
-    
+    motor_d(254, REVERSA);
+
     //@TODO:
     //Logica de frenado y giro para buscarlo
   }

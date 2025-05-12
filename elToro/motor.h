@@ -9,8 +9,8 @@
 
 //prototipos de las funciones
 void setup_motor ();
-void motor_d (uint8_t dutyCycle, uint8_t estado);
-void motor_i (uint8_t dutyCycle, uint8_t estado);
-void motores (uint8_t dutyCycle, uint8_t estado);
+void motor_d (uint8_t potencia, uint8_t estado);
+void motor_i (uint8_t potencia, uint8_t estado);
+void motores (uint8_t potencia, uint8_t estado);
 
 #endif

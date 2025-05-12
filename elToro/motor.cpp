@@ -17,10 +17,10 @@ void setup_motor ()
 }
 
 
-void motor_d (uint8_t dutyCycle, uint8_t estado)
+void motor_d (uint8_t potencia, uint8_t estado)
 {
     //configuro la velocidad (deberiamos chequear la frecuencia del pin)
-    analogWrite(pin_PWM_D, dutyCycle);  // dutyCycle entre 0 (0%) y 255 (100%)
+    analogWrite(pin_PWM_D, potencia);  // potencia entre 0 (0%) y 255 (100%)
 
     //configuro la direccion
     switch (estado)
@@ -49,7 +49,7 @@ void motor_d (uint8_t dutyCycle, uint8_t estado)
 void motor_i (uint8_t potencia, uint8_t estado)
 {
     //configuro la velocidad
-    analogWrite(pin_PWM_I, dutyCycle);  // dutyCycle entre 0 (0%) y 255 (100%)
+    analogWrite(pin_PWM_I, potencia);  // potencia entre 0 (0%) y 255 (100%)
 
     //configuro la direccion
     switch (estado)
@@ -78,8 +78,8 @@ void motor_i (uint8_t potencia, uint8_t estado)
 void motores (uint8_t potencia, uint8_t estado)
 {
     //configuro la velocidad
-    analogWrite(pin_PWM_D, dutyCycle);  // dutyCycle entre 0 (0%) y 255 (100%)
-    analogWrite(pin_PWM_I, dutyCycle);  
+    analogWrite(pin_PWM_D, potencia);  // potencia entre 0 (0%) y 255 (100%)
+    analogWrite(pin_PWM_I, potencia);  
 
     //configuro la direccion
     switch (estado)
