@@ -52,5 +52,21 @@ void loop() {
     }
   }
 
+  if (readInfraFlag) {
+    //Reseteo el flag y leo
+    readInfraFlag = false;
+    infraData_D infraData_I infraData_A = getInfraData();
+    
+    if (infraData_D == 0 ){  // si el sensor manda 0 es porque vee el limite del borde
+      choqueBorde(D);
+    }
+    else if (infraData_I == 0){
+      choqueBorde(I);
+    }
+    else if (infraData_A == 0){
+      choqueBorde(A);
+    }
+    }
+  }
   searchAndDestroy();
 }

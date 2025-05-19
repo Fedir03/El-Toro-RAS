@@ -4,4 +4,5 @@
 
 void onTimerInterrupt() {
   readAccelerometerFlag = true;
+  readInfraFlag = true;
 }
