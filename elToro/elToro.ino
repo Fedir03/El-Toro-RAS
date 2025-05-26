@@ -4,12 +4,16 @@
 #include "accelerometer.h"
 #include "interrupts.h"
 #include "globals.h"
+#include "infrarrojo.h"
 
 #define TIME_BETWEEN_INTERRUPTS 100000 //nanosegundos
 
 // Variables globales
 volatile bool readAccelerometerFlag = false;
 MPU6050 accelerometer;
+
+
+infraData_t infraData;
 
 void setup() {
   Serial.begin(9600);
@@ -55,16 +59,16 @@ void loop() {
   if (readInfraFlag) {
     //Reseteo el flag y leo
     readInfraFlag = false;
-    infraData_D infraData_I infraData_A = getInfraData();
+    getInfraData(&infraData);
     
     if (infraData_D == 0 ){  // si el sensor manda 0 es porque vee el limite del borde
-      choqueBorde(D);
+      choqueBorde("D");
     }
     else if (infraData_I == 0){
-      choqueBorde(I);
+      choqueBorde("I");
     }
     else if (infraData_A == 0){
-      choqueBorde(A);
+      choqueBorde("A");
     }
     }
   }
