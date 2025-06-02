@@ -4,9 +4,9 @@
 
 typedef struct 
 {
-  infraData_D;
-  infraData_I;
-  infraData_A;
+  bool infraData_D;
+  bool infraData_I;
+  bool infraData_A;
 }infraData_t;
 
 void getInfraData(infraData_t * infraData);

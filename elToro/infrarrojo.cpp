@@ -8,13 +8,17 @@
 
 void getInfraData(infraData_t * infraData) {
   
-  //int sensorPin_D = 4; // TCRT5000 signal conectado al pin digital derecho
-  //int sensorPin_I = 5; // TCRT5000 signal conectado al pin digital izquierdo
-  //int sensorPin_A = 6; // TCRT5000 signal conectado al pin digital adelante
-  // lee el valor digital de 0 a 1
+
+  // lee el valor digital de 0 (veo el borde) a 1 (no veo el borde)
   infraData->infraData_D = digitalRead(sensorPin_D);
   infraData->infraData_I = digitalRead(sensorPin_I);
   infraData->infraData_A = digitalRead(sensorPin_A);
 
- // return infraData_D, infraData_I, infraData_A;
+
 }
+
+  //int sensorPin_D = 4; // TCRT5000 signal conectado al pin digital derecho
+  //int sensorPin_I = 5; // TCRT5000 signal conectado al pin digital izquierdo
+  //int sensorPin_A = 6; // TCRT5000 signal conectado al pin digital adelante
+
+   // return infraData_D, infraData_I, infraData_A;
