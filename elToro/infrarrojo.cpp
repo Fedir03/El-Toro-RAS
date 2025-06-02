@@ -1,6 +1,7 @@
 // para medir el valor del sensor infrarrojo
 
 #include "pins.h"
+#include "infrarrojo.h"
 
 //int infraData_D = 0; // Variable para almacenar el valor del sensor derecho
 //int infraData_I = 0; // Variable para almacenar el valor del sensor izquierdo

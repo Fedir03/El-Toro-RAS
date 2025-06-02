@@ -42,6 +42,8 @@ void searchAndDestroy() {
 
     //@TODO:
     //Logica de frenado y giro para buscarlo
+
+    motores(250, APAGADO);
   }
 
 

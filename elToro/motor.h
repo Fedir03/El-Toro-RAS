@@ -7,6 +7,8 @@
 #define ADELANTE 1
 #define REVERSA 2
 
+#include <stdint.h>
+
 //prototipos de las funciones
 void setup_motor ();
 void motor_d (uint8_t potencia, uint8_t estado); 

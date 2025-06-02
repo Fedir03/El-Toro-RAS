@@ -5,6 +5,8 @@
 #include "interrupts.h"
 #include "globals.h"
 #include "infrarrojo.h"
+#include "Test.h"
+#include "choqueBorde.h"
 
 #define TIME_BETWEEN_INTERRUPTS 100000 //nanosegundos
 
@@ -61,16 +63,16 @@ void loop() {
     readInfraFlag = false;
     getInfraData(&infraData);
     
-    if (infraData_D == 0 ){  // si el sensor manda 0 es porque vee el limite del borde
+    if (infraData.infraData_D == 0 ){  // si el sensor manda 0 es porque ve el limite del borde
       choqueBorde("D");
     }
-    else if (infraData_I == 0){
+    else if (infraData.infraData_I == 0){
       choqueBorde("I");
     }
-    else if (infraData_A == 0){
+    else if (infraData.infraData_A == 0){
       choqueBorde("A");
     }
-    }
   }
-  searchAndDestroy();
+  
+  //searchAndDestroy();
 }
