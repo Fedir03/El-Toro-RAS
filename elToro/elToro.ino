@@ -6,6 +6,7 @@
 #include "globals.h"
 #include "infrarrojo.h"
 #include "Test.h"
+#include "TestInfra.h"
 #include "choqueBorde.h"
 
 #define TIME_BETWEEN_INTERRUPTS 100000 //nanosegundos
