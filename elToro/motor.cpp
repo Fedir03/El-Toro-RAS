@@ -20,6 +20,11 @@ void setup_motor ()
 
     estado_motor_d = APAGADO;
     estado_motor_i = APAGADO;
+
+    digitalWrite(pin_Motor_D1, LOW);
+    digitalWrite(pin_Motor_D2, LOW);
+    digitalWrite(pin_Motor_I1, LOW);
+    digitalWrite(pin_Motor_I2, LOW);    
 }
 
 

@@ -1,5 +1,5 @@
 // codigo para cuando el robot encuentra el borde
-#include "choqueBorde.h";
+#include "choqueBorde.h"
 
 void choqueBorde(char direccion) {
 

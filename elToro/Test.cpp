@@ -11,10 +11,6 @@ void setup_test(void) {
 }
 
 void test(void) {
-  digitalWrite(IN1, LOW);
-    digitalWrite(IN2, LOW);
-    digitalWrite(IN3, LOW);
-    digitalWrite(IN4, LOW);
   // Generar pulso ultrasónico
   digitalWrite(trigPin, LOW);
   delayMicroseconds(2);
@@ -37,22 +33,12 @@ void test(void) {
   if (abs(distance) < 5) {
     digitalWrite(ledCerca, HIGH);
     digitalWrite(ledLejos, LOW);
-    digitalWrite(IN1, HIGH);
-    digitalWrite(IN2, LOW);
-    digitalWrite(IN3, HIGH);
-    digitalWrite(IN4, LOW);
-  analogWrite(ENA, 100); // Velocidad media (0 a 255)
-  analogWrite(ENB, 100);
+    motores(100, ADELANTE);
   
   } else {
     digitalWrite(ledCerca, LOW);
     digitalWrite(ledLejos, HIGH);
-    digitalWrite(IN1, LOW);
-    digitalWrite(IN2, HIGH);
-    digitalWrite(IN3, LOW);
-    digitalWrite(IN4, HIGH);
-    analogWrite(ENA, 100); // Velocidad media (0 a 255)
-    analogWrite(ENB, 100);
+    motores(100, REVERSA);
   }
 
   delay(400); // Pequeño retardo para estabilidad

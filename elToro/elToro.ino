@@ -14,6 +14,8 @@
 volatile bool readAccelerometerFlag = false;
 MPU6050 accelerometer;
 
+volatile bool readInfraFlag = false;
+
 
 infraData_t infraData;
 
@@ -27,6 +29,7 @@ void setup() {
   pinMode(Trigger, OUTPUT);
   pinMode(Echo, INPUT);
   digitalWrite(Trigger, LOW);
+  
 
   //Inicializo acelerometro
   Wire.begin();
@@ -37,42 +40,42 @@ void setup() {
   //Configuro timer para que interrumpa cada 100ms 
   Timer1.initialize(TIME_BETWEEN_INTERRUPTS);
   Timer1.attachInterrupt(onTimerInterrupt);
-
+  setup_test();
 }
 
 void loop() {
   //Si la interrupcion seteó el flag, leo
-  if (readAccelerometerFlag) {
-    //Reseteo el flag y leo
-    readAccelerometerFlag = false;
-    accelerometerData accData = getAccelerometerData();
+  // if (readAccelerometerFlag) {
+  //   //Reseteo el flag y leo
+  //   readAccelerometerFlag = false;
+  //   accelerometerData accData = getAccelerometerData();
     
-    //Veo si me pegaron de costado
-    if (accData.ay > 2 || accData.ay < -2) {
-      tone(Buzzer, 1500);
-      delay(200);
-      noTone(Buzzer);
+  //   //Veo si me pegaron de costado
+  //   if (accData.ay > 2 || accData.ay < -2) {
+  //     tone(Buzzer, 1500);
+  //     delay(200);
+  //     noTone(Buzzer);
 
-      //@TODO:
-      //Motores max hacia adelante por poquito tiempo (me escapo)
-    }
-  }
+  //     //@TODO:
+  //     //Motores max hacia adelante por poquito tiempo (me escapo)
+  //   }
+  // }
 
-  if (readInfraFlag) {
-    //Reseteo el flag y leo
-    readInfraFlag = false;
-    getInfraData(&infraData);
+  // if (readInfraFlag) {
+  //   //Reseteo el flag y leo
+  //   readInfraFlag = false;
+  //   getInfraData(&infraData);
     
-    if (infraData.infraData_D == 0 ){  // si el sensor manda 0 es porque ve el limite del borde
-      choqueBorde("D");
-    }
-    else if (infraData.infraData_I == 0){
-      choqueBorde("I");
-    }
-    else if (infraData.infraData_A == 0){
-      choqueBorde("A");
-    }
-  }
-  
+  //   if (infraData.infraData_D == 0 ){  // si el sensor manda 0 es porque ve el limite del borde
+  //     choqueBorde('D');
+  //   }
+  //   else if (infraData.infraData_I == 0){
+  //     choqueBorde('I');
+  //   }
+  //   else if (infraData.infraData_A == 0){
+  //     choqueBorde('A');
+  //   }
+  // }
+  test();
   //searchAndDestroy();
 }

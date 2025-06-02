@@ -3,6 +3,7 @@
 
 #include <Arduino.h>
 #include "pins.h"
+#include "motor.h"
 
 void setup_test(void);
 void test(void); 
