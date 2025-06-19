@@ -6,8 +6,6 @@
 const int Trigger = 7;
 const int Echo = 8;
 
-const int Led = 13;
-const int Buzzer = 11;
 
 extern MPU6050 accelerometer;
 
@@ -36,14 +34,15 @@ const int echoPin = Echo;
 const int ledCerca = 9;  // Se enciende a 5 cm
 const int ledLejos = 10;  // Se enciende si NO está a 5 cm
 
-
+const int Led = 2;
+const int Buzzer = 1;
 //pines del infrarrojo
 // el 1 es el adelante
 // 2 derecha
 // 3 izquierda
-const int sensorPin_D = 1;
-const int sensorPin_I = 12;
-const int sensorPin_A = 13;
+const int sensorPin_D = 12;
+const int sensorPin_I = 13;
+const int sensorPin_A = 1;
 
 // botoncitos
 const int batalla = 14;

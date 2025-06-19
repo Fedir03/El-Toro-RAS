@@ -22,9 +22,6 @@ infraData_t infraData;
 
 void setup() {
   Serial.begin(9600);
-  
-  pinMode(Led, OUTPUT);
-  pinMode(Buzzer, OUTPUT);  
 
   //Inicializo ultasonico (us)
   pinMode(Trigger, OUTPUT);
@@ -41,8 +38,8 @@ void setup() {
   //Configuro timer para que interrumpa cada 100ms 
   Timer1.initialize(TIME_BETWEEN_INTERRUPTS);
   Timer1.attachInterrupt(onTimerInterrupt);
-  setup_test();
-}
+  setup_test_infra();
+  }
 
 void loop() {
   //Si la interrupcion seteó el flag, leo
@@ -77,6 +74,6 @@ void loop() {
   //     choqueBorde('A');
   //   }
   // }
-  test();
+  test_infra();
   //searchAndDestroy();
 }

@@ -3,25 +3,18 @@
 // codigo de prueba para testear los sensores a infrarrojos y los motores
 
 void setup_test_infra(void) {
-  pinMode(trigPin, OUTPUT);
-
   pinMode(sensorPin_D, INPUT);
   pinMode(sensorPin_I, INPUT);
   pinMode(sensorPin_A, INPUT);
   
   pinMode(ledCerca, OUTPUT);
   pinMode(ledLejos, OUTPUT);
+  motores(0, APAGADO);
   Serial.begin(9600);
 }
 
 
 void test_infra(void) {
-  // Generar pulso ultrasónico
-  digitalWrite(trigPin, LOW);
-  delayMicroseconds(2);
-  digitalWrite(trigPin, HIGH);
-  delayMicroseconds(10);
-  digitalWrite(trigPin, LOW);
 
   int infra_D = 1;
   int infra_I = 1;
@@ -56,6 +49,8 @@ void test_infra(void) {
   } else {// si no ve nada apaga los leds
     digitalWrite(ledCerca, LOW);
     digitalWrite(ledLejos, LOW);
+    motores(100, APAGADO);
+
   }
 
   delay(400); // Pequeño retardo para estabilidad
