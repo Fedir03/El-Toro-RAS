@@ -1,0 +1,18 @@
+# Arduino IDE
+*.tmp
+*.orig
+*.bak
+*_bak
+~*
+# Build files
+build/
+*.log
+*.log~
+.DS_Store
+# Editor configuration
+.vscode/
+project.ide
+*.settings
+
+# System-specific
+*.pyc
