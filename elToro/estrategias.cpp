@@ -11,15 +11,31 @@ void choqueBorde(char direccion) {
     // gira a la izquierda
     motor_d(200, ADELANTE);
     motor_i(100, REVERSA);
+    delay(500);
+    motores(0, APAGADO);
+    motores(100, REVERSA);
+    delay(300);
+    motores(0, APAGADO);
   }
   if (direccion == 'I'){
     // gira a la derecha
     motor_i(200, ADELANTE);
     motor_d(100, REVERSA);
+    delay(500);
+    motores(0, APAGADO);
+    motores(100, REVERSA);
+    delay(300);
+    motores(0, APAGADO);
   }
   if (direccion == 'A'){
     // va para atras
     motores(100, REVERSA);
+    delay(500);
+    motores(0, APAGADO);
+    motor_d(200, ADELANTE);
+    motor_i(100, REVERSA);
+    delay(300);
+    motores(0, APAGADO);
 
     // aca deberiamos elegir si girar a la izquierda o a la derecha
     // izquierda:
