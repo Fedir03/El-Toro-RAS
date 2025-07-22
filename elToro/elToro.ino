@@ -21,28 +21,31 @@ volatile bool readInfraFlag = false;
 infraData_t infraData;
 
 void setup() {
-  Serial.begin(9600);
+  // Serial.begin(9600);
 
   //Inicializo ultasonico (us)
   pinMode(Trigger, OUTPUT);
   pinMode(Echo, INPUT);
   digitalWrite(Trigger, LOW);
   
+  setup_motor();
 
-  //Inicializo acelerometro
+  // Inicializo acelerometro
   Wire.begin();
   accelerometer.initialize();
-  if (accelerometer.testConnection()) Serial.println("Acelerometro iniciado correctamente");
-  else Serial.println("Error al iniciar acelerometro");
 
+  // if (accelerometer.testConnection()) Serial.println("Acelerometro iniciado correctamente");
+  // else Serial.println("Error al iniciar acelerometro");
+  
   //Configuro timer para que interrumpa cada 100ms 
-  Timer1.initialize(TIME_BETWEEN_INTERRUPTS);
-  Timer1.attachInterrupt(onTimerInterrupt);
-  setup_test_infra();
-  }
+  // Timer1.initialize(TIME_BETWEEN_INTERRUPTS);
+  // Timer1.attachInterrupt(onTimerInterrupt);
+  // setup_test_infra();
+
+}
 
 void loop() {
-  //Si la interrupcion seteó el flag, leo
+  // Si la interrupcion seteó el flag, leo
   // if (readAccelerometerFlag) {
   //   //Reseteo el flag y leo
   //   readAccelerometerFlag = false;
@@ -50,13 +53,8 @@ void loop() {
     
   //   //Veo si me pegaron de costado
   //   if (accData.ay > 2 || accData.ay < -2) {
-  //     tone(Buzzer, 1500);
-  //     delay(200);
-  //     noTone(Buzzer);
-
-  //     //@TODO:
-  //     //Motores max hacia adelante por poquito tiempo (me escapo)
-  //   }
+      
+  //     }
   // }
 
   // if (readInfraFlag) {
@@ -74,6 +72,8 @@ void loop() {
   //     choqueBorde('A');
   //   }
   // }
+
   test_infra();
-  //searchAndDestroy();
+  
+  // searchAndDestroy();
 }
