@@ -8,31 +8,31 @@ void choqueBorde(char direccion) {
 
   // gira dependiendo de que infrarrojo viò el borde
   if (direccion == 'D'){
-    // gira a la izquierda
+    // gira a la izquierda por medio segundo
     motor_d(200, ADELANTE);
     motor_i(100, REVERSA);
     delay(500);
-    motores(0, APAGADO);
+    motores(0, APAGADO);  // apago los motores y va para atras por 300ms
     motores(100, REVERSA);
     delay(300);
     motores(0, APAGADO);
   }
   if (direccion == 'I'){
-    // gira a la derecha
+    // gira a la derecha por medio segundo
     motor_i(200, ADELANTE);
     motor_d(100, REVERSA);
     delay(500);
-    motores(0, APAGADO);
+    motores(0, APAGADO);  // apago los motores y va para atras por 300ms
     motores(100, REVERSA);
     delay(300);
     motores(0, APAGADO);
   }
   if (direccion == 'A'){
-    // va para atras
+    // va para atras por medio segundo
     motores(100, REVERSA);
     delay(500);
     motores(0, APAGADO);
-    motor_d(200, ADELANTE);
+    motor_d(200, ADELANTE); // gira hacia la izquierda por 300ms 
     motor_i(100, REVERSA);
     delay(300);
     motores(0, APAGADO);
@@ -58,6 +58,7 @@ void searchAndDestroy(elToroData_t *elToroData) {
     digitalWrite(ledLejos, HIGH);
     digitalWrite(ledCerca, LOW);
     motores(100, ADELANTE);
+    
   } else {
 
     //@TODO:
@@ -65,7 +66,10 @@ void searchAndDestroy(elToroData_t *elToroData) {
 
     digitalWrite(ledLejos, LOW);
     digitalWrite(ledCerca, HIGH);
-    motores(100, APAGADO);
+    motor_d(100, ADELANTE); // gira hacia la izquierda por medio segundo 
+    motor_i(100, REVERSA);
+    delay(500);
+    motores(0, APAGADO);
   }
 
 
