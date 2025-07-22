@@ -7,7 +7,7 @@
 #include "infrarrojo.h"
 #include "Test.h"
 #include "TestInfra.h"
-#include "choqueBorde.h"
+#include "estrategias.h"
 
 #define TIME_BETWEEN_INTERRUPTS 100000 //nanosegundos
 
@@ -18,7 +18,7 @@ MPU6050 accelerometer;
 volatile bool readInfraFlag = false;
 
 
-infraData_t infraData;
+elToroData_t elToroData;
 
 void setup() {
   // Serial.begin(9600);
@@ -46,32 +46,32 @@ void setup() {
 
 void loop() {
   // Si la interrupcion seteó el flag, leo
-  // if (readAccelerometerFlag) {
-  //   //Reseteo el flag y leo
-  //   readAccelerometerFlag = false;
-  //   accelerometerData accData = getAccelerometerData();
+  if (readAccelerometerFlag) {
+    //Reseteo el flag y leo
+    readAccelerometerFlag = false;
+    elToroData->accData = getAccelerometerData();
     
-  //   //Veo si me pegaron de costado
-  //   if (accData.ay > 2 || accData.ay < -2) {
+    //Veo si me pegaron de costado
+    if (accData.ay > 2 || accData.ay < -2) {
       
-  //     }
-  // }
+      }
+  }
 
-  // if (readInfraFlag) {
-  //   //Reseteo el flag y leo
-  //   readInfraFlag = false;
-  //   getInfraData(&infraData);
+  if (readInfraFlag) {
+    //Reseteo el flag y leo
+    readInfraFlag = false;
+    getInfraData(&elToroData.infraData);
     
-  //   if (infraData.infraData_D == 0 ){  // si el sensor manda 0 es porque ve el limite del borde
-  //     choqueBorde('D');
-  //   }
-  //   else if (infraData.infraData_I == 0){
-  //     choqueBorde('I');
-  //   }
-  //   else if (infraData.infraData_A == 0){
-  //     choqueBorde('A');
-  //   }
-  // }
+    if (elToroData.infraData.infraData_D == 0 ){  // si el sensor manda 0 es porque ve el limite del borde
+      choqueBorde('D');
+    }
+    else if (elToroData.infraData.infraData_I == 0){
+      choqueBorde('I');
+    }
+    else if (elToroData.infraData.infraData_A == 0){
+      choqueBorde('A');
+    }
+  }
 
   test_infra();
   

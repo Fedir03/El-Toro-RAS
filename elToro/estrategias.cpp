@@ -1,5 +1,5 @@
 // codigo para cuando el robot encuentra el borde
-#include "choqueBorde.h"
+#include "estrategias.h"
 
 void choqueBorde(char direccion) {
 
@@ -30,4 +30,33 @@ void choqueBorde(char direccion) {
     //motor_d(100, "REVERSA")
   }
 
+}
+
+void searchAndDestroy() {
+  
+  long int d = ultraSonico();
+  
+  //@FLOWCHART: "Lo Veo?"
+  if (d > 15 && d < 100) {
+    //Motores max hacia adelante (voy a buscarlo)
+    digitalWrite(ledLejos, HIGH);
+    digitalWrite(ledCerca, LOW);
+    motores(100, ADELANTE);
+  } else {
+
+    //@TODO:
+    //Logica de frenado y giro para buscarlo
+
+    digitalWrite(ledLejos, LOW);
+    digitalWrite(ledCerca, HIGH);
+    motores(100, APAGADO);
+  }
+
+
+  // Serial.print("Distancia: ");
+  // Serial.print(d);      //Printeo distancia en cm medida por us
+  // Serial.print("cm");
+  // Serial.println();
+  delay(5);        
+  
 }
