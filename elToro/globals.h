@@ -24,8 +24,8 @@ typedef struct {
   accelerometerData_t accData;
   infraData_t infraData;
   long int d;
-  uint8_t estado_motor_d;
-  uint8_t estado_motor_i;
+  short estado_motor_d;
+  short estado_motor_i;
 } elToroData_t;
 
 #endif

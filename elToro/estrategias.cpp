@@ -32,12 +32,12 @@ void choqueBorde(char direccion) {
 
 }
 
-void searchAndDestroy() {
+void searchAndDestroy(elToroData_t *elToroData) {
   
-  long int d = ultraSonico();
+  elToroData->d = ultraSonico();
   
   //@FLOWCHART: "Lo Veo?"
-  if (d > 15 && d < 100) {
+  if (elToroData->d > 15 && elToroData->d < 100) {
     //Motores max hacia adelante (voy a buscarlo)
     digitalWrite(ledLejos, HIGH);
     digitalWrite(ledCerca, LOW);

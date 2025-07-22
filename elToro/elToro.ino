@@ -1,6 +1,5 @@
 #include <TimerOne.h>
 #include "pins.h"
-#include "searchAndDestroy.h"
 #include "accelerometer.h"
 #include "interrupts.h"
 #include "globals.h"
@@ -17,7 +16,6 @@ MPU6050 accelerometer;
 
 volatile bool readInfraFlag = false;
 
-
 elToroData_t elToroData;
 
 void setup() {
@@ -33,14 +31,11 @@ void setup() {
   // Inicializo acelerometro
   Wire.begin();
   accelerometer.initialize();
-
-  // if (accelerometer.testConnection()) Serial.println("Acelerometro iniciado correctamente");
-  // else Serial.println("Error al iniciar acelerometro");
   
-  //Configuro timer para que interrumpa cada 100ms 
-  // Timer1.initialize(TIME_BETWEEN_INTERRUPTS);
-  // Timer1.attachInterrupt(onTimerInterrupt);
-  // setup_test_infra();
+  // Configuro timer para que interrumpa cada 100ms 
+  Timer1.initialize(TIME_BETWEEN_INTERRUPTS);
+  Timer1.attachInterrupt(onTimerInterrupt);
+  setup_test_infra();
 
 }
 
@@ -49,11 +44,11 @@ void loop() {
   if (readAccelerometerFlag) {
     //Reseteo el flag y leo
     readAccelerometerFlag = false;
-    elToroData->accData = getAccelerometerData();
+    elToroData.accData = getAccelerometerData();
     
     //Veo si me pegaron de costado
-    if (accData.ay > 2 || accData.ay < -2) {
-      
+    if (elToroData.accData.ay > 2 || elToroData.accData.ay < -2) {
+
       }
   }
 
