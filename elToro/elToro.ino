@@ -4,8 +4,6 @@
 #include "interrupts.h"
 #include "globals.h"
 #include "infrarrojo.h"
-#include "Test.h"
-#include "TestInfra.h"
 #include "estrategias.h"
 
 #define TIME_BETWEEN_INTERRUPTS 100000 //nanosegundos
@@ -26,7 +24,7 @@ void setup() {
   pinMode(Echo, INPUT);
   digitalWrite(Trigger, LOW);
   
-  setup_motor();
+  setup_motor(&elToroData);
 
   // Inicializo acelerometro
   Wire.begin();
@@ -35,8 +33,7 @@ void setup() {
   // Configuro timer para que interrumpa cada 100ms 
   Timer1.initialize(TIME_BETWEEN_INTERRUPTS);
   Timer1.attachInterrupt(onTimerInterrupt);
-  setup_test_infra();
-
+  setupInfra();
 }
 
 void loop() {
@@ -48,7 +45,9 @@ void loop() {
     
     //Veo si me pegaron de costado
     if (elToroData.accData.ay > 2 || elToroData.accData.ay < -2) {
-
+        motores(250, ADELANTE, &elToroData);
+        delay(500);
+        motores(0, APAGADO, &elToroData);
       }
   }
 
@@ -57,18 +56,17 @@ void loop() {
     readInfraFlag = false;
     getInfraData(&elToroData.infraData);
     
-    if (elToroData.infraData.infraData_D == 0 ){  // si el sensor manda 0 es porque ve el limite del borde
-      choqueBorde('D');
+    // si el sensor manda 0 es porque ve el limite del borde
+    if (elToroData.infraData.infraData_D == 0 ){  
+      choqueBorde('D', &elToroData);
     }
     else if (elToroData.infraData.infraData_I == 0){
-      choqueBorde('I');
+      choqueBorde('I', &elToroData);
     }
     else if (elToroData.infraData.infraData_A == 0){
-      choqueBorde('A');
+      choqueBorde('A', &elToroData);
     }
   }
 
-  test_infra();
-  
-  // searchAndDestroy();
+  searchAndDestroy(&elToroData);
 }

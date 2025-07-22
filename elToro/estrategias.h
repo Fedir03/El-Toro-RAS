@@ -5,9 +5,10 @@
 #include "ultraSonico.h"
 #include "infrarrojo.h"
 #include "pins.h"
+#include "globals.h"
 #include <Arduino.h>
 
-void choqueBorde(char direccion);
-void searchAndDestroy();
+void choqueBorde(char direccion, elToroData_t *elToroData);
+void searchAndDestroy(elToroData_t *elToroData);
 
 #endif

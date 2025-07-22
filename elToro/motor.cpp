@@ -30,10 +30,6 @@ void motor_d (uint8_t potencia, uint8_t estado, elToroData_t *Toro)
         digitalWrite(pin_Motor_D2, LOW);
     }
     Toro->estado_motor_d = estado;
-    if(potencia > 255)      //verificacion de valor maximo
-    {
-        potencia=255; 
-    }
 
     //configuro la velocidad 
     analogWrite(pin_PWM_D, potencia);  // potencia entre 0 (0%) y 255 (100%)
@@ -69,10 +65,6 @@ void motor_i (uint8_t potencia, uint8_t estado, elToroData_t *Toro)
         digitalWrite(pin_Motor_I2, LOW);
     }
     Toro->estado_motor_i = estado;
-    if(potencia > 255)      //verificacion de valor maximo
-    {
-        potencia=255; 
-    }    
 
     //configuro la velocidad
     analogWrite(pin_PWM_I, potencia);  // potencia entre 0 (0%) y 255 (100%)
@@ -113,11 +105,6 @@ void motores (uint8_t potencia, uint8_t estado, elToroData_t *Toro)
     }
     Toro->estado_motor_d = estado;
     Toro->estado_motor_i = estado;
-
-    if(potencia > 255)      //verificacion de valor maximo
-    {
-        potencia=255; 
-    }
 
     //configuro la velocidad
     analogWrite(pin_PWM_D, potencia);  // potencia entre 0 (0%) y 255 (100%)
