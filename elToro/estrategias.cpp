@@ -1,6 +1,16 @@
 // codigo para cuando el robot encuentra el borde
 #include "estrategias.h"
 
+#define GIRO_EVASIVO(der, izq)          \
+    motor_d(200, der, elToroData);      \
+    motor_i(100, izq, elToroData);      \
+    delay(500);                         \
+    motores(0, APAGADO, elToroData);    \
+    motores(100, REVERSA, elToroData);  \
+    delay(300);                         \
+    motores(0, APAGADO, elToroData);    \
+  
+
 void choqueBorde(char direccion, elToroData_t *elToroData) {
 
   // para los motores
@@ -9,25 +19,10 @@ void choqueBorde(char direccion, elToroData_t *elToroData) {
   // gira dependiendo de que infrarrojo viò el borde
   if (direccion == 'D'){
     // gira a la izquierda por medio segundo
-    motor_d(200, ADELANTE, elToroData);
-    motor_i(100, REVERSA, elToroData);
-    delay(500);
-    motores(0, APAGADO, elToroData);  // apago los motores y va para atras por 300ms
-    motores(100, REVERSA, elToroData);
-    delay(300);
-    motores(0, APAGADO, elToroData);
-  }
-  if (direccion == 'I'){
-    // gira a la derecha por medio segundo
-    motor_i(200, ADELANTE, elToroData);
-    motor_d(100, REVERSA, elToroData);
-    delay(500);
-    motores(0, APAGADO, elToroData);  // apago los motores y va para atras por 300ms
-    motores(100, REVERSA, elToroData);
-    delay(300);
-    motores(0, APAGADO, elToroData);
-  }
-  if (direccion == 'A'){
+    GIRO_EVASIVO(ADELANTE, REVERSA);
+  } else if (direccion == 'I'){
+    GIRO_EVASIVO(REVERSA, ADELANTE);
+  } else if (direccion == 'A'){
     // va para atras por medio segundo
     motores(100, REVERSA, elToroData);
     delay(500);
