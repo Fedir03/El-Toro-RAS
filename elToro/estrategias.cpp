@@ -44,7 +44,7 @@ void searchAndDestroy(elToroData_t *elToroData) {
     //Motores max hacia adelante (voy a buscarlo)
     digitalWrite(ledLejos, HIGH);
     digitalWrite(ledCerca, LOW);
-    motores(100, ADELANTE, elToroData);
+    motores(50, ADELANTE, elToroData);
     
   } else {
 
@@ -53,9 +53,9 @@ void searchAndDestroy(elToroData_t *elToroData) {
 
     digitalWrite(ledLejos, LOW);
     digitalWrite(ledCerca, HIGH);
-    motor_d(100, ADELANTE, elToroData); // gira hacia la izquierda por medio segundo
-    motor_i(100, REVERSA, elToroData);
-    delay(500);
+    motor_d(50, ADELANTE, elToroData); // gira hacia la izquierda por medio segundo
+    motor_i(50, REVERSA, elToroData);
+    delay(100);
     motores(0, APAGADO, elToroData);
   }
 
