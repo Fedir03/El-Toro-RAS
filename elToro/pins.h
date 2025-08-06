@@ -34,9 +34,9 @@ const int ledCerca = 13;
 const int ledLejos = A0;
 
 // Pines del infrarrojo
-const int sensorPin_A = 2;  // IR1 (Adelante) - INTERRUPCIÓN 0
+const int sensorPin_A = 1;  // IR1 (Atras)
 const int sensorPin_D = 3;  // IR2 (Derecha) - INTERRUPCIÓN 1
-const int sensorPin_I = 1;  // IR3 (Izquierda)
+const int sensorPin_I = 2;  // IR3 (Izquierda) - INTERRUPCIÓN 0
 
 // botoncitos
 const int batalla = 14;
