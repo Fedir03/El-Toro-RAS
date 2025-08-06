@@ -1,4 +1,3 @@
-#include <TimerOne.h>
 #include "pins.h"
 #include "accelerometer.h"
 #include "interrupts.h"
@@ -8,11 +7,30 @@
 
 #define TIME_BETWEEN_INTERRUPTS 20000000 //nanosegundos
 
-// Variables globales
-volatile bool readAccelerometerFlag = false;
-MPU6050 accelerometer;
+volatile bool infraDetectado_I = false;
+volatile bool infraDetectado_D = false;
 
-volatile bool readInfraFlag = false;
+void isr_Infra_I() {
+  infraDetectado_I = true;
+}
+
+void isr_Infra_D() {
+  infraDetectado_D = true;
+
+enum RobotState {
+  MODO_BUSQUEDA,
+  MODO_ATAQUE,
+  MODO_EVASION_D,
+  MODO_EVASION_I,
+  MODO_EVASION_A
+};
+
+RobotState estadoActual = MODO_BUSQUEDA;
+unsigned long tiempoInicioManiobra = 0;
+bool enManiobra = false;
+}
+
+MPU6050 accelerometer;
 
 elToroData_t elToroData;
 
@@ -30,43 +48,95 @@ void setup() {
   Wire.begin();
   accelerometer.initialize();
   
-  // Configuro timer para que interrumpa cada 100ms 
-  // Timer1.initialize(TIME_BETWEEN_INTERRUPTS);
-  // Timer1.attachInterrupt(onTimerInterrupt);
-  // setupInfra();
+  setupInfra();
 }
 
 void loop() {
-  // // Si la interrupcion seteó el flag, leo
-  // if (readAccelerometerFlag) {
-    //Reseteo el flag y leo
-    // readAccelerometerFlag = false;
-  //   elToroData.accData = getAccelerometerData();
-    
-  //   //Veo si me pegaron de costado
-  //   if (elToroData.accData.ay > 2 || elToroData.accData.ay < -2) {
-  //       motores(250, ADELANTE, &elToroData);
-  //       delay(500);
-  //       motores(0, APAGADO, &elToroData);
-  //     }
-  // // }
+  if (infraDetectado_D) {
+    infraDetectado_D = false;
+    estadoActual = MODO_EVASION_D;
+    tiempoInicioManiobra = millis();
+    enManiobra = true;
+  } else if (infraDetectado_I) {
+    infraDetectado_I = false;
+    estadoActual = MODO_EVASION_I;
+    tiempoInicioManiobra = millis();
+    enManiobra = true;
+  }
 
-  // // if (readInfraFlag) {
-  //   //Reseteo el flag y leo
-  //   // readInfraFlag = false;
-  //   getInfraData(&elToroData.infraData);
-    
-  //   // si el sensor manda 0 es porque ve el limite del borde
-  //   if (elToroData.infraData.infraData_D == 0 ){  
-  //     choqueBorde('D', &elToroData);
-  //   }
-  //   else if (elToroData.infraData.infraData_I == 0){
-  //     choqueBorde('I', &elToroData);
-  //   }
-  //   else if (elToroData.infraData.infraData_A == 0){
-  //     choqueBorde('A', &elToroData);
-  //   }
-  // }
+  switch (estadoActual) {
 
-  searchAndDestroy(&elToroData);
+    case MODO_BUSQUEDA:
+      elToroData->d = ultraSonico();
+      if (elToroData->d > 15 && elToroData->d < 100) {
+        estadoActual = MODO_ATAQUE;
+      } else {
+        if (!enManiobra) {
+          motor_d(50, ADELANTE);
+          motor_i(50, REVERSA);
+          tiempoInicioManiobra = millis();
+          enManiobra = true;
+        } else {
+          if (millis() - tiempoInicioManiobra >= 100) {
+            motores(0, APAGADO, elToroData);
+            enManiobra = false;
+          }
+        }
+      }
+      break;
+
+    case MODO_ATAQUE:
+      motores(255, ADELANTE, elToroData);
+      elToroData->d = ultraSonico();
+      if (elToroData->d >= 100 || elToroData->d <= 15) {
+        motores(0, APAGADO, elToroData);
+        estadoActual = MODO_BUSQUEDA;
+        enManiobra = false;
+      }
+      break;
+
+    case MODO_EVASION_D:
+      if (enManiobra) {
+        if (millis() - tiempoInicioManiobra < 500) {
+          motor_d(200, ADELANTE, elToroData);
+          motor_i(100, REVERSA, elToroData);
+        }
+        else if (millis() - tiempoInicioManiobra < 800) {
+          motores(100, REVERSA, elToroData);
+        }
+        else {
+          motores(0, APAGADO, elToroData);
+          enManiobra = false;
+          estadoActual = MODO_BUSQUEDA;
+        }
+      }
+      break;
+
+    case MODO_EVASION_I:
+      if (enManiobra) {
+        if (millis() - tiempoInicioManiobra < 500) {
+          motor_d(200, REVERSA, elToroData);
+          motor_i(100, ADELANTE, elToroData);
+        }
+        else if (millis() - tiempoInicioManiobra < 800) {
+          motores(100, REVERSA, elToroData);
+        }
+        else {
+          motores(0, APAGADO, elToroData);
+          enManiobra = false;
+          estadoActual = MODO_BUSQUEDA;
+        }
+      }
+      break;
+
+    case MODO_EVASION_A:
+      getInfraData(&elToroData.infraData);
+      if (elToroData.infraData.infraData_A == 0) {
+        motores(200, ADELANTE, elToroData);
+      } else {
+        motores(0, APAGADO, elToroData);
+        estadoActual = MODO_BUSQUEDA;
+      }
+      break;
+  }
 }
