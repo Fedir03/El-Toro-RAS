@@ -102,7 +102,7 @@ void loop() {
           motor_i(100, REVERSA, elToroData);
         }
         else if (millis() - tiempoInicioManiobra < 800) {
-          motores(100, REVERSA, elToroData);
+          motores(100, ADELANTE, elToroData);
         }
         else {
           motores(0, APAGADO, elToroData);
@@ -119,7 +119,7 @@ void loop() {
           motor_i(100, ADELANTE, elToroData);
         }
         else if (millis() - tiempoInicioManiobra < 800) {
-          motores(100, REVERSA, elToroData);
+          motores(100, ADELANTE, elToroData);
         }
         else {
           motores(0, APAGADO, elToroData);
@@ -134,8 +134,13 @@ void loop() {
       if (elToroData.infraData.infraData_A == 0) {
         motores(200, ADELANTE, elToroData);
       } else {
-        motores(0, APAGADO, elToroData);
-        estadoActual = MODO_BUSQUEDA;
+        elToroData->d = ultraSonico();
+        if (elToroData->d > 15 && elToroData->d < 100) {
+          estadoActual = MODO_ATAQUE;
+        } else {
+          motores(0, APAGADO, elToroData);
+          estadoActual = MODO_BUSQUEDA;
+        }
       }
       break;
   }
