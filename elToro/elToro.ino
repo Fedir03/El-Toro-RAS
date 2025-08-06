@@ -1,9 +1,9 @@
 #include "pins.h"
 #include "accelerometer.h"
-#include "interrupts.h"
 #include "globals.h"
 #include "infrarrojo.h"
-#include "estrategias.h"
+#include "motor.h"
+#include "ultraSonico.h"
 
 #define TIME_BETWEEN_INTERRUPTS 20000000 //nanosegundos
 
@@ -16,7 +16,8 @@ void isr_Infra_I() {
 
 void isr_Infra_D() {
   infraDetectado_D = true;
-
+}
+  
 enum RobotState {
   MODO_BUSQUEDA,
   MODO_ATAQUE,
@@ -28,7 +29,6 @@ enum RobotState {
 RobotState estadoActual = MODO_BUSQUEDA;
 unsigned long tiempoInicioManiobra = 0;
 bool enManiobra = false;
-}
 
 MPU6050 accelerometer;
 
@@ -42,13 +42,16 @@ void setup() {
   pinMode(Echo, INPUT);
   digitalWrite(Trigger, LOW);
   
-  setup_motor(&elToroData);
+   setup_motor(&elToroData);
 
   // Inicializo acelerometro
   Wire.begin();
   accelerometer.initialize();
   
   setupInfra();
+
+  attachInterrupt(digitalPinToInterrupt(sensorPin_I), isr_Infra_I, FALLING);
+  attachInterrupt(digitalPinToInterrupt(sensorPin_D), isr_Infra_D, FALLING);
 }
 
 void loop() {
@@ -67,18 +70,18 @@ void loop() {
   switch (estadoActual) {
 
     case MODO_BUSQUEDA:
-      elToroData->d = ultraSonico();
-      if (elToroData->d > 15 && elToroData->d < 100) {
+      elToroData.d = ultraSonico();
+      if (elToroData.d > 15 && elToroData.d < 100) {
         estadoActual = MODO_ATAQUE;
       } else {
         if (!enManiobra) {
-          motor_d(50, ADELANTE);
-          motor_i(50, REVERSA);
+          motor_d(50, ADELANTE, &elToroData);
+          motor_i(50, REVERSA, &elToroData);
           tiempoInicioManiobra = millis();
           enManiobra = true;
         } else {
           if (millis() - tiempoInicioManiobra >= 100) {
-            motores(0, APAGADO, elToroData);
+            motores(0, APAGADO, &elToroData);
             enManiobra = false;
           }
         }
@@ -86,10 +89,10 @@ void loop() {
       break;
 
     case MODO_ATAQUE:
-      motores(255, ADELANTE, elToroData);
-      elToroData->d = ultraSonico();
-      if (elToroData->d >= 100 || elToroData->d <= 15) {
-        motores(0, APAGADO, elToroData);
+      motores(255, ADELANTE, &elToroData);
+      elToroData.d = ultraSonico();
+      if (elToroData.d >= 100 || elToroData.d <= 15) {
+        motores(0, APAGADO, &elToroData);
         estadoActual = MODO_BUSQUEDA;
         enManiobra = false;
       }
@@ -98,14 +101,14 @@ void loop() {
     case MODO_EVASION_D:
       if (enManiobra) {
         if (millis() - tiempoInicioManiobra < 500) {
-          motor_d(200, ADELANTE, elToroData);
-          motor_i(100, REVERSA, elToroData);
+          motor_d(200, ADELANTE, &elToroData);
+          motor_i(100, REVERSA, &elToroData);
         }
         else if (millis() - tiempoInicioManiobra < 800) {
-          motores(100, ADELANTE, elToroData);
+          motores(150, ADELANTE, &elToroData);
         }
         else {
-          motores(0, APAGADO, elToroData);
+          motores(0, APAGADO, &elToroData);
           enManiobra = false;
           estadoActual = MODO_BUSQUEDA;
         }
@@ -115,14 +118,14 @@ void loop() {
     case MODO_EVASION_I:
       if (enManiobra) {
         if (millis() - tiempoInicioManiobra < 500) {
-          motor_d(200, REVERSA, elToroData);
-          motor_i(100, ADELANTE, elToroData);
+          motor_d(200, REVERSA, &elToroData);
+          motor_i(100, ADELANTE, &elToroData);
         }
         else if (millis() - tiempoInicioManiobra < 800) {
-          motores(100, ADELANTE, elToroData);
+          motores(150, ADELANTE, &elToroData);
         }
         else {
-          motores(0, APAGADO, elToroData);
+          motores(0, APAGADO, &elToroData);
           enManiobra = false;
           estadoActual = MODO_BUSQUEDA;
         }
@@ -132,13 +135,13 @@ void loop() {
     case MODO_EVASION_A:
       getInfraData(&elToroData.infraData);
       if (elToroData.infraData.infraData_A == 0) {
-        motores(200, ADELANTE, elToroData);
+        motores(200, ADELANTE, &elToroData);
       } else {
-        elToroData->d = ultraSonico();
-        if (elToroData->d > 15 && elToroData->d < 100) {
+        elToroData.d = ultraSonico();
+        if (elToroData.d > 15 && elToroData.d < 100) {
           estadoActual = MODO_ATAQUE;
         } else {
-          motores(0, APAGADO, elToroData);
+          motores(0, APAGADO, &elToroData);
           estadoActual = MODO_BUSQUEDA;
         }
       }

@@ -5,9 +5,15 @@ void setupInfra(void) {
   pinMode(sensorPin_D, INPUT_PULLUP);
   pinMode(sensorPin_A, INPUT);
   
-  attachInterrupt(digitalPinToInterrupt(sensorPin_I), isr_Infra_I, FALLING);
-  attachInterrupt(digitalPinToInterrupt(sensorPin_D), isr_Infra_D, FALLING);
-
   pinMode(ledCerca, OUTPUT);
   pinMode(ledLejos, OUTPUT);
+}
+
+void getInfraData(infraData_t * infraData) {
+  
+  // lee el valor digital de 0 (veo el borde) a 1 (no veo el borde)
+  infraData->infraData_D = digitalRead(sensorPin_D);
+  infraData->infraData_I = digitalRead(sensorPin_I);
+  infraData->infraData_A = digitalRead(sensorPin_A);
+
 }

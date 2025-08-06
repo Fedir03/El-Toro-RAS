@@ -6,5 +6,6 @@
 #include <Arduino.h>
 
 void setupInfra(void);
+void getInfraData(infraData_t * infraData);
  
 #endif
