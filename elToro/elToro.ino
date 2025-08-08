@@ -94,7 +94,7 @@ void loop() {
         break;
 
       case MODO_ATAQUE:
-        motores(80, ADELANTE, &elToroData);
+        motores(150, ADELANTE, &elToroData);
         elToroData.d = ultraSonico();
         if (elToroData.d >= 30 || elToroData.d < 0) {
           motores(0, APAGADO, &elToroData);
@@ -105,12 +105,12 @@ void loop() {
 
       case MODO_EVASION_D:
         if (enManiobra) {
-          if (millis() - tiempoInicioManiobra < 400) {
+          if (millis() - tiempoInicioManiobra < 500) {
             motor_d(100, ADELANTE, &elToroData);
             motor_i(100, REVERSA, &elToroData);
           }
-          else if (millis() - tiempoInicioManiobra < 700) {
-            motores(120, REVERSA, &elToroData);
+          else if (millis() - tiempoInicioManiobra < 800) {
+            motores(120, ADELANTE, &elToroData);
           }
           else {
             motores(0, APAGADO, &elToroData);
@@ -122,11 +122,11 @@ void loop() {
 
       case MODO_EVASION_I:
         if (enManiobra) {
-          if (millis() - tiempoInicioManiobra < 400) {
+          if (millis() - tiempoInicioManiobra < 500) {
             motor_d(100, REVERSA, &elToroData);
             motor_i(100, ADELANTE, &elToroData);
           }
-          else if (millis() - tiempoInicioManiobra < 700) {
+          else if (millis() - tiempoInicioManiobra < 800) {
             motores(120, ADELANTE, &elToroData);
           }
           else {
@@ -151,6 +151,6 @@ void loop() {
           }
         }
         break;
-    }
-  }
+    }
+  }
 }
