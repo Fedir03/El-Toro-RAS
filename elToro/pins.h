@@ -39,7 +39,7 @@ const int sensorPin_D = 3;  // IR2 (Derecha) - INTERRUPCIÓN 1
 const int sensorPin_I = 2;  // IR3 (Izquierda) - INTERRUPCIÓN 0
 
 // botoncitos
-const int batalla = 14;
-// const int modo = 13;
+const int batalla = 11;
+// const int modo = 10;
 
 #endif  
