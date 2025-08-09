@@ -94,7 +94,7 @@ void loop() {
         break;
 
       case MODO_ATAQUE:
-        motores(150, ADELANTE, &elToroData);
+        motores(255, ADELANTE, &elToroData);
         elToroData.d = ultraSonico();
         if (elToroData.d >= 30 || elToroData.d < 0) {
           motores(0, APAGADO, &elToroData);
@@ -135,7 +135,7 @@ void loop() {
             estadoActual = MODO_BUSQUEDA;
           }
         }
-        break;
+      break;
 
       case MODO_EVASION_A:
         getInfraData(&elToroData.infraData);
@@ -150,7 +150,7 @@ void loop() {
             estadoActual = MODO_BUSQUEDA;
           }
         }
-        break;
-    }
-  }
+      break;
+    }
+  }
 }
