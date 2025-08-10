@@ -85,18 +85,18 @@ void loop() {
 
       case MODO_BUSQUEDA:
         elToroData.d = ultraSonico();
-        if (elToroData.d > 0 && elToroData.d < 30) {
+        if (elToroData.d > 0 && elToroData.d < 85) {
           estadoActual = MODO_ATAQUE;
         } else {
-          motor_d(80, ADELANTE, &elToroData);
-          motor_i(80, REVERSA, &elToroData);
+          motor_d(100, ADELANTE, &elToroData);
+          motor_i(100, REVERSA, &elToroData);
         }
         break;
 
       case MODO_ATAQUE:
         motores(255, ADELANTE, &elToroData);
         elToroData.d = ultraSonico();
-        if (elToroData.d >= 30 || elToroData.d < 0) {
+        if (elToroData.d >= 85 || elToroData.d < 0) {
           motores(0, APAGADO, &elToroData);
           estadoActual = MODO_BUSQUEDA;
           enManiobra = false;
