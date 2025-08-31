@@ -1,18 +1,13 @@
 #include "accelerometer.h"
-#include "pins.h"
-#include "I2Cdev.h"
-#include "MPU6050.h"
-#include "Wire.h"
-#include <Arduino.h>
 
-accelerometerData getAccelerometerData() {
+accelerometerData_t getAccelerometerData() {
   int ax, ay, az;
   int gx, gy, gz;
 
   accelerometer.getAcceleration(&ax, &ay, &az);
   accelerometer.getRotation(&gx, &gy, &gz);
 
-  accelerometerData accData;
+  accelerometerData_t accData;
 
   accData.ax = ax * (9.81 / 16384.0);
   accData.ay = ay * (9.81 / 16384.0);

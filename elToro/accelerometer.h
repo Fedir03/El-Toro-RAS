@@ -1,15 +1,13 @@
 #ifndef ACCELEROMETER_H
 #define ACCELEROMETER_H
 
-typedef struct {
-  float ax;
-  float ay;
-  float az;
-  float gx;
-  float gy;
-  float gz;
-} accelerometerData;
+#include "pins.h"
+#include "I2Cdev.h"
+#include "MPU6050.h"
+#include "Wire.h"
+#include <Arduino.h>
+#include "globals.h"
 
-accelerometerData getAccelerometerData();
+accelerometerData_t getAccelerometerData();
 
 #endif

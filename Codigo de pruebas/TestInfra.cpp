@@ -10,7 +10,6 @@ void setup_test_infra(void) {
   pinMode(ledCerca, OUTPUT);
   pinMode(ledLejos, OUTPUT);
   motores(0, APAGADO);
-  Serial.begin(9600);
 }
 
 
@@ -30,12 +29,12 @@ void test_infra(void) {
     if (infra_D == 0) {// si ve algo a la derecha gira a la izquierda y aprende el ledCerca
         digitalWrite(ledCerca, HIGH);
         digitalWrite(ledLejos, LOW);
-        motor_d(100, ADELANTE);
+        motores(100, ADELANTE);
     
     } else if (infra_I == 0){// si ve algo a la izquierda gira a la derecha y aprende el ledLejos
         digitalWrite(ledCerca, LOW);
         digitalWrite(ledLejos, HIGH);
-        motor_i(100, ADELANTE);
+        motores(250, ADELANTE);
     
     } else if (infra_A == 0){// si ve algo adelante va para atras, aprende ambos los leds y genera sonido
         digitalWrite(ledCerca, HIGH);
