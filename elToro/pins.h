@@ -5,18 +5,25 @@
 #include "MPU6050.h"
 
 // Ultrasonido
-const int Trigger = 12;
-const int Echo = 0;
+//const int Trigger = 12;
+//const int Echo = 0;
+
+// Ultrasonido derecho e izquierdo
+const int Trigger_D = A2;
+const int Echo_D = 13;
+const int Trigger_I = 9;
+const int Echo_I = 12;
 
 extern MPU6050 accelerometer;
 
 // Pines para el puente H (H-Bridge)
 const int pin_PWM_D = 5;        // ENA
 const int pin_Motor_D1 = 4;     // IN1 
-const int pin_Motor_D2 = A1;    // IN2
-const int pin_Motor_I1 = 6;     // IN3
-const int pin_Motor_I2 = 7;     // IN4
-const int pin_PWM_I = 9;        // ENB
+const int pin_Motor_D2 = 1;    // IN2
+const int pin_Motor_I1 = 8;     // IN3
+const int pin_Motor_I2 = 9;     // IN4
+const int pin_PWM_I = 6;        // ENB
+const int pin_STBY = 0;          // STBY
 
 // Pines para test
 const int ENA = pin_PWM_D;
@@ -26,20 +33,20 @@ const int ENB = pin_Motor_I1;
 const int IN3 = pin_Motor_I2;
 const int IN4 = pin_PWM_I;
 
-const int trigPin = Trigger;
-const int echoPin = Echo;
+//const int trigPin = Trigger;
+//const int echoPin = Echo;
 
 // Pines de los LEDs
-const int ledCerca = 13;
+const int ledCerca = A1;
 const int ledLejos = A0;
 
 // Pines del infrarrojo
-const int sensorPin_A = 1;  // IR1 (Atras)
+//const int sensorPin_A = 2;  // IR1 (Atras)
 const int sensorPin_D = 3;  // IR2 (Derecha) - INTERRUPCIÓN 1
 const int sensorPin_I = 2;  // IR3 (Izquierda) - INTERRUPCIÓN 0
 
 // botoncitos
 const int batalla = 11;
-// const int modo = 10;
+const int modo = 10;
 
 #endif  
