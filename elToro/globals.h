@@ -23,7 +23,9 @@ typedef struct
 typedef struct {
   accelerometerData_t accData;
   infraData_t infraData;
-  long int d;
+  long int d;        // distancia central (para compatibilidad)
+  long int d_d;      // distancia sensor derecho
+  long int d_i;      // distancia sensor izquierdo
   short estado_motor_d;
   short estado_motor_i;
 } elToroData_t;

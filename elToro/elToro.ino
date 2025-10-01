@@ -11,7 +11,6 @@ volatile bool infraDetectado_I = false;
 volatile bool infraDetectado_D = false;
 
 bool inicioSolicitado = false;
-unsigned long tiempoInicioConteo;
 
 void isr_Infra_I() {
   infraDetectado_I = true;
@@ -41,11 +40,23 @@ void setup() {
   // Serial.begin(9600);
 
   //Inicializo ultasonico (us)
-  pinMode(Trigger, OUTPUT);
-  pinMode(Echo, INPUT);
-  digitalWrite(Trigger, LOW);
+  //pinMode(Trigger, OUTPUT);
+  //pinMode(Echo, INPUT);
+  //digitalWrite(Trigger, LOW);
   
-   setup_motor(&elToroData);
+  //Pongo el STBY en high
+  pinMode(pin_STBY, OUTPUT);
+  digitalWrite(pin_STBY, HIGH);
+
+  //Inicializo ultrasonidos derecho e izquierdo
+  pinMode(Trigger_D, OUTPUT);
+  pinMode(Echo_D, INPUT);
+  pinMode(Trigger_I, OUTPUT);
+  pinMode(Echo_I, INPUT);
+  digitalWrite(Trigger_D, LOW);
+  digitalWrite(Trigger_I, LOW);
+  
+  setup_motor(&elToroData);
 
   // Inicializo acelerometro
   Wire.begin();
@@ -56,7 +67,9 @@ void setup() {
   attachInterrupt(digitalPinToInterrupt(sensorPin_I), isr_Infra_I, FALLING);
   attachInterrupt(digitalPinToInterrupt(sensorPin_D), isr_Infra_D, FALLING);
 
-  pinMode(batalla, INPUT_PULLUP); 
+  pinMode(LED_BUILTIN, OUTPUT); // Configuramos el LED interno como salida
+
+  // pinMode(batalla, INPUT_PULLUP); 
 }
 
 void loop() {
@@ -65,6 +78,9 @@ void loop() {
     tiempoInicioConteo = millis();
     digitalWrite(ledLejos, HIGH);
   }
+
+  bool isEnemyOnTheRight;
+  bool isEnemyOnTheLeft;
 
   if (inicioSolicitado && (millis() - tiempoInicioConteo > 5000)) {
     digitalWrite(ledLejos, LOW);
@@ -84,19 +100,35 @@ void loop() {
     switch (estadoActual) {
 
       case MODO_BUSQUEDA:
-        elToroData.d = ultraSonico();
-        if (elToroData.d > 0 && elToroData.d < 85) {
+        elToroData.d_d = ultraSonico_D();
+        elToroData.d_i = ultraSonico_I();
+
+        isEnemyOnTheRight = (elToroData.d_d > MIN_DISTANCE && elToroData.d_d < MAX_DISTANCE);
+        isEnemyOnTheLeft = (elToroData.d_i > MIN_DISTANCE && elToroData.d_i < MAX_DISTANCE);
+        
+        if (isEnemyOnTheLeft && isEnemyOnTheRight) {
           estadoActual = MODO_ATAQUE;
-        } else {
+        }
+        else if (isEnemyOnTheRight || isEnemyOnTheLeft) {
+          int rightWheelDirection = isEnemyOnTheRight ? REVERSA : ADELANTE;
+          int leftWheelDirection = isEnemyOnTheRight ? ADELANTE : REVERSA;
+          motor_d(50, rightWheelDirection, &elToroData);
+          motor_i(50, leftWheelDirection, &elToroData);
+          estadoActual = MODO_ATAQUE;
+        }
+        else {
           motor_d(100, ADELANTE, &elToroData);
           motor_i(100, REVERSA, &elToroData);
         }
-        break;
+        break;  
 
       case MODO_ATAQUE:
         motores(255, ADELANTE, &elToroData);
-        elToroData.d = ultraSonico();
-        if (elToroData.d >= 85 || elToroData.d < 0) {
+        elToroData.d_d = ultraSonico_D();
+        elToroData.d_i = ultraSonico_I();
+        isEnemyOnTheRight = (elToroData.d_d > MIN_DISTANCE && elToroData.d_d < MAX_DISTANCE);
+        isEnemyOnTheLeft = (elToroData.d_i > MIN_DISTANCE && elToroData.d_i < MAX_DISTANCE);
+        if ((isEnemyOnTheLeft != isEnemyOnTheRight) || (!isEnemyOnTheLeft && !isEnemyOnTheRight)) {
           motores(0, APAGADO, &elToroData);
           estadoActual = MODO_BUSQUEDA;
           enManiobra = false;
@@ -105,12 +137,12 @@ void loop() {
 
       case MODO_EVASION_D:
         if (enManiobra) {
-          if (millis() - tiempoInicioManiobra < 500) {
-            motor_d(100, ADELANTE, &elToroData);
-            motor_i(100, REVERSA, &elToroData);
+          if (millis() - tiempoInicioManiobra < 600) {
+            motor_d(50, ADELANTE, &elToroData);
+            motor_i(50, REVERSA, &elToroData);
           }
-          else if (millis() - tiempoInicioManiobra < 800) {
-            motores(120, ADELANTE, &elToroData);
+          else if (millis() - tiempoInicioManiobra < 900) {
+            motores(80, ADELANTE, &elToroData);
           }
           else {
             motores(0, APAGADO, &elToroData);
@@ -122,12 +154,12 @@ void loop() {
 
       case MODO_EVASION_I:
         if (enManiobra) {
-          if (millis() - tiempoInicioManiobra < 500) {
-            motor_d(100, REVERSA, &elToroData);
-            motor_i(100, ADELANTE, &elToroData);
+          if (millis() - tiempoInicioManiobra < 600) {
+            motor_d(50, REVERSA, &elToroData);
+            motor_i(50, ADELANTE, &elToroData);
           }
-          else if (millis() - tiempoInicioManiobra < 800) {
-            motores(120, ADELANTE, &elToroData);
+          else if (millis() - tiempoInicioManiobra < 900) {
+            motores(80, ADELANTE, &elToroData);
           }
           else {
             motores(0, APAGADO, &elToroData);
