@@ -4,14 +4,19 @@
 //debe estar al principio del main para inicializar los pines a utilizar por los motores
 void setup_motor (elToroData_t *Toro)
 {
-    pinMode(pin_PWM_D , OUTPUT); //inicializo el pin para la señal PWM
-    pinMode(pin_PWM_I , OUTPUT);
-
     pinMode(pin_Motor_D1 , OUTPUT); //inicializo el pin para el motor derecho
     pinMode(pin_Motor_D2 , OUTPUT); 
 
     pinMode(pin_Motor_I1 , OUTPUT); //inicializo el pin para el motor izquierdo
     pinMode(pin_Motor_I2 , OUTPUT);
+
+    //Pongo el STBY en high
+    pinMode(pin_STBY, OUTPUT);
+    digitalWrite(pin_STBY, HIGH);
+
+    pinMode(pin_PWM_D , OUTPUT); //inicializo el pin para la señal PWM
+    pinMode(pin_PWM_I , OUTPUT);
+
 
     Toro->estado_motor_d = APAGADO;
     Toro->estado_motor_i = APAGADO;

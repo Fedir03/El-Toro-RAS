@@ -17,12 +17,12 @@ const int Echo_I = 12;
 extern MPU6050 accelerometer;
 
 // Pines para el puente H (H-Bridge)
-const int pin_PWM_D = 5;        // ENA
-const int pin_Motor_D1 = 4;     // IN1 
-const int pin_Motor_D2 = 1;    // IN2
-const int pin_Motor_I1 = 8;     // IN3
-const int pin_Motor_I2 = 9;     // IN4
-const int pin_PWM_I = 6;        // ENB
+const int pin_PWM_I = 5;        // ENA
+const int pin_Motor_I2 = 4;     // IN1 
+const int pin_Motor_I1 = 1;    // IN2
+const int pin_Motor_D2 = 7;     // IN3
+const int pin_Motor_D1 = 8;     // IN4
+const int pin_PWM_D = 6;        // ENB
 const int pin_STBY = 0;          // STBY
 
 // Pines para test
