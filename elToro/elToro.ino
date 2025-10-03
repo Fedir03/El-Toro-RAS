@@ -29,9 +29,16 @@ enum RobotState {
   MODO_EVASION_A
 };
 
+enum Direction {
+  LEFT,
+  RIGHT
+}
+
+
 RobotState estadoActual = MODO_BUSQUEDA;
 unsigned long tiempoInicioManiobra = 0;
 bool enManiobra = false;
+Direction direccionGiroBusqueda = LEFT;
 
 MPU6050 accelerometer;
 
@@ -61,6 +68,7 @@ void setup() {
   pinMode(LED_BUILTIN, OUTPUT);  // Configuramos el LED interno como salida
 
   pinMode(batalla, INPUT_PULLUP);
+  pinMode(modo, INPUT_PULLUP);
 }
 
 void loop() {
@@ -69,10 +77,14 @@ void loop() {
     inicioSolicitado = true;
     tiempoInicioConteo = millis();
     digitalWrite(ledLejos, HIGH);
+
+    if (digitalRead(modo) == LOW) {
+      direccionGiroBusqueda = RIGHT;
+    }
   }
 
-  bool isEnemyOnTheRight;
-  bool isEnemyOnTheLeft;
+  bool isEnemyOnTheRight, isEnemyOnLeft;
+  int rightWheelDirection, leftWheelDirection;
 
   if (inicioSolicitado && (millis() - tiempoInicioConteo > 5000)) {
     digitalWrite(ledLejos, LOW);
@@ -102,15 +114,18 @@ void loop() {
           estadoActual = MODO_ATAQUE;
         }
         else if (isEnemyOnTheRight || isEnemyOnTheLeft) {
-          int rightWheelDirection = isEnemyOnTheRight ? REVERSA : ADELANTE;
-          int leftWheelDirection = isEnemyOnTheRight ? ADELANTE : REVERSA;
+          rightWheelDirection = isEnemyOnTheRight ? REVERSA : ADELANTE;
+          leftWheelDirection = isEnemyOnTheRight ? ADELANTE : REVERSA;
+          direccionGiroBusqueda = isEnemyOnTheRight ? RIGHT : LEFT;
           motor_d(50, rightWheelDirection, &elToroData);
           motor_i(50, leftWheelDirection, &elToroData);
           estadoActual = MODO_ATAQUE;
         }
         else {
-          motor_d(100, ADELANTE, &elToroData);
-          motor_i(100, REVERSA, &elToroData);
+          rightWheelDirection = (direccionGiroBusqueda == RIGHT) ? REVERSA : ADELANTE;
+          leftWheelDirection = (direccionGiroBusqueda == RIGHT) ? ADELANTE : REVERSA;
+          motor_d(100, rightWheelDirection, &elToroData);
+          motor_i(100, leftWheelDirection, &elToroData);
         }
         break;
 
